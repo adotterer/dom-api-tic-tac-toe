@@ -1,59 +1,119 @@
 const currentPlayerSymbol = "x";
-const squareValues = ["", "", "", "", "", "", "", "", ""];
+let squareValues = ["", "", "", "", "", "", "", "", ""];
 const board = document.getElementById("tic-tac-toe-board");
 // Create global functions here so that listeners can call them below
-// const turnFinder = function (){
-//   let count = 0;
-//   squareValues.forEach(square => {
-//     if(square !== "") {
-//       count++
-//     }
-// if (count % 2 === 0){
-//   return true
-// } return false
-//   });
+
+const turnFinder = function () {
   let count = 0;
-  squareValues.forEach(square => {
-    if (square !== ""){
+  squareValues.forEach((square) => {
+    if (square !== "") {
       count++;
     }
-   
-  })
-   if (count % 2 === 0) {
-  console.log(true)
+  });
+  if (count % 2 === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
-} else {
-  console.log(false)
-}
-  
-  // If whole thing is empty, it's player 1
-  //  if there is an odd number of empty spaces = player 1
-// }
-window.addEventListener("DOMContentLoaded", (event) => { 
-  let currentPlayerSymbol = document.createElement("img" )
+let buttonsCollection = document.querySelectorAll("button");
+
+let winnerBanner = document.getElementById("game-status");
+
+let checkGameStatus = () => {
+  let row1 = squareValues[0].concat(squareValues[1]).concat(squareValues[2]);
+  let row2 = squareValues[3].concat(squareValues[4]).concat(squareValues[5]);
+  let row3 = squareValues[6].concat(squareValues[7]).concat(squareValues[8]);
+  let diag1 = squareValues[0].concat(squareValues[4]).concat(squareValues[8]);
+  let diag2 = squareValues[2].concat(squareValues[4]).concat(squareValues[6]);
+  let column1 = squareValues[0].concat(squareValues[3]).concat(squareValues[6]);
+  let column2 = squareValues[1].concat(squareValues[4]).concat(squareValues[7]);
+  let column3 = squareValues[2].concat(squareValues[5]).concat(squareValues[8]);
+  let winner = "";
+  let comboArr = [row1, row2, row3, diag1, diag2, column1, column2, column3];
+  for (let i = 0; i < comboArr.length; i++) {
+    if (comboArr[i] === "XXX") {
+      winner = "X";
+    } else if (comboArr[i] === "OOO") {
+      winner = "O";
+    } else {
+      console.log("no winner, (yet)");
+    }
+  }
+  if (winner === "X") {
+    winnerBanner.innerHTML = "X is the winner";
+    return;
+  } else if (winner === "O") {
+    winnerBanner.innerHTML = "O is the winner";
+    return;
+  } else {
+    if (squareValues.includes("")) {
+      return;
+    } else {
+      console.log("there is no winner");
+    }
+  }
+};
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  let everySquare = document.querySelectorAll(".square");
+
+  buttonsCollection[0].addEventListener("click", (event) => {
+    squareValues = ["", "", "", "", "", "", "", "", ""];
+    [...everySquare].forEach((square) => {
+      square.innerHTML = "";
+    });
+    winnerBanner.innerHTML = "";
+  });
+  buttonsCollection[1].addEventListener("click", (event) => {
+    squareValues = ["", "", "", "", "", "", "", "", ""];
+    [...everySquare].forEach((square) => {
+      square.innerHTML = "";
+    });
+    winnerBanner.innerHTML = "";
+  });
+  // When the user clicks, first we check if they clicked in a valid area
+  // Input the location of the player's symbol into the sqaureValues array
+
+  // Now, add the visual x and o to the respective div in the HTML
+  // grab the HTML div, for appending or innerHTML
+  // setattribute to an x or o, then add it to div
   board.addEventListener("click", (event) => {
     let target = event.target;
     let targetID = target.getAttribute("id");
     let clickIndex = targetID.split("-")[1];
-  let turn = turnFinder()
-  console.log(turn);
+    let turn = turnFinder();
 
-    // let indexOfDash = targetID.indexOf("-");
-    // let idNumber = targetID.slice(indexOfDash + 1);
-    if (!targetID.includes("square-") || squareValues[clickIndex] !== "" ) {
+    if (!targetID.includes("square-") || squareValues[clickIndex] !== "") {
       console.log("Nothing happened!");
-      return
-    } else{
-      if (turnFinder() === true ){
-        squareValues[clickIndex] = "X" 
-      } else{
-        squareValues[clickIndex] = "O" 
-      }
+      return;
     }
-    console.log(squareValues)
+    if (turn) {
+      squareValues[clickIndex] = "X";
+      let currentPlayerSymbol = document.createElement("img");
+      let xIconDiv = document.getElementById(`square-${clickIndex}`);
+      currentPlayerSymbol.setAttribute(
+        "src",
+        "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg"
+      );
+      xIconDiv.appendChild(currentPlayerSymbol);
+      checkGameStatus();
+    } else {
+      squareValues[clickIndex] = "O";
+      let currentPlayerSymbol = document.createElement("img");
+      let oIconDiv = document.getElementById(`square-${clickIndex}`);
+      currentPlayerSymbol.setAttribute(
+        "src",
+        "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg"
+      );
+      oIconDiv.appendChild(currentPlayerSymbol);
+      checkGameStatus();
+    }
+
+    console.log(squareValues);
   });
 });
-
 
 // There must not be a play in that square, so:
 // Programmatically create an img element, set its source to
