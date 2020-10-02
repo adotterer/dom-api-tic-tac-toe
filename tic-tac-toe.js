@@ -1,4 +1,3 @@
-const currentPlayerSymbol = "x";
 let squareValues = ["", "", "", "", "", "", "", "", ""];
 const board = document.getElementById("tic-tac-toe-board");
 let buttonsCollection = document.querySelectorAll("button");
@@ -38,6 +37,7 @@ let endGame = () => {
     "GAME OVER",
   ];
 };
+
 let checkGameStatus = () => {
   let row1 = squareValues[0].concat(squareValues[1]).concat(squareValues[2]);
   let row2 = squareValues[3].concat(squareValues[4]).concat(squareValues[5]);
