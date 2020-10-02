@@ -1,6 +1,14 @@
 const currentPlayerSymbol = "x";
 let squareValues = ["", "", "", "", "", "", "", "", ""];
 const board = document.getElementById("tic-tac-toe-board");
+let buttonsCollection = document.querySelectorAll("button");
+let winnerBanner = document.getElementById("game-status");
+let everySquare = document.querySelectorAll(".square");
+let xIMG =
+  "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg";
+let oIMG =
+  "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg";
+
 // Create global functions here so that listeners can call them below
 
 const turnFinder = function () {
@@ -17,10 +25,19 @@ const turnFinder = function () {
   }
 };
 
-let buttonsCollection = document.querySelectorAll("button");
-
-let winnerBanner = document.getElementById("game-status");
-
+let endGame = () => {
+  squareValues = [
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+    "GAME OVER",
+  ];
+};
 let checkGameStatus = () => {
   let row1 = squareValues[0].concat(squareValues[1]).concat(squareValues[2]);
   let row2 = squareValues[3].concat(squareValues[4]).concat(squareValues[5]);
@@ -38,14 +55,16 @@ let checkGameStatus = () => {
     } else if (comboArr[i] === "OOO") {
       winner = "O";
     } else {
-      console.log("no winner, (yet)");
+      console.log("no winner (yet)");
     }
   }
   if (winner === "X") {
     winnerBanner.innerHTML = "X is the winner";
+    endGame();
     return;
   } else if (winner === "O") {
     winnerBanner.innerHTML = "O is the winner";
+    endGame();
     return;
   } else {
     if (squareValues.includes("")) {
@@ -58,7 +77,7 @@ let checkGameStatus = () => {
 
 window.addEventListener("DOMContentLoaded", (event) => {
   // RESET GAME
-  let everySquare = document.querySelectorAll(".square");
+
   buttonsCollection[0].addEventListener("click", (event) => {
     squareValues = ["", "", "", "", "", "", "", "", ""];
     [...everySquare].forEach((square) => {
@@ -94,20 +113,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
       squareValues[clickIndex] = "X";
       let currentPlayerSymbol = document.createElement("img");
       let xIconDiv = document.getElementById(`square-${clickIndex}`);
-      currentPlayerSymbol.setAttribute(
-        "src",
-        "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-x.svg"
-      );
+      currentPlayerSymbol.setAttribute("src", xIMG);
       xIconDiv.appendChild(currentPlayerSymbol);
       checkGameStatus();
     } else {
       squareValues[clickIndex] = "O";
       let currentPlayerSymbol = document.createElement("img");
       let oIconDiv = document.getElementById(`square-${clickIndex}`);
-      currentPlayerSymbol.setAttribute(
-        "src",
-        "https://assets.aaonline.io/Module-DOM-API/formative-project-tic-tac-toe/player-o.svg"
-      );
+      currentPlayerSymbol.setAttribute("src", oIMG);
       oIconDiv.appendChild(currentPlayerSymbol);
       checkGameStatus();
     }
