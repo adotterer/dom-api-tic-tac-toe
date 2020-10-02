@@ -51,14 +51,14 @@ let checkGameStatus = () => {
     if (squareValues.includes("")) {
       return;
     } else {
-      console.log("there is no winner");
+      winnerBanner.innerHTML = "There was no winner";
     }
   }
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
+  // RESET GAME
   let everySquare = document.querySelectorAll(".square");
-
   buttonsCollection[0].addEventListener("click", (event) => {
     squareValues = ["", "", "", "", "", "", "", "", ""];
     [...everySquare].forEach((square) => {
@@ -73,6 +73,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     });
     winnerBanner.innerHTML = "";
   });
+  //
   // When the user clicks, first we check if they clicked in a valid area
   // Input the location of the player's symbol into the sqaureValues array
 
